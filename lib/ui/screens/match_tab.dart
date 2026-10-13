@@ -28,6 +28,10 @@ class _MatchTabState extends State<MatchTab> {
   static String? _resumeId;
   final _job = TextEditingController(text: _jobText);
   KeywordMatch? _result;
+
+  /// The CV [_result] was computed for. The list re-sorts when any CV is
+  /// edited, so the result must never be shown against a different CV.
+  String? _resultFor;
   final _resultKey = GlobalKey();
 
   @override
@@ -48,7 +52,11 @@ class _MatchTabState extends State<MatchTab> {
         ? await runAi(context, 'Membaca lowongan…', (ai) => ai.matchSkills(_job.text, r.data))
         : null;
     if (!mounted) return;
-    setState(() => _result = viaAi ?? KeywordMatcher.match(_job.text, r.data.plainText));
+    setState(() {
+      _resumeId = r.id;
+      _resultFor = r.id;
+      _result = viaAi ?? KeywordMatcher.match(_job.text, r.data.plainText);
+    });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final ctx = _resultKey.currentContext;
       if (ctx != null) Scrollable.ensureVisible(ctx, duration: Motion.of(context, Motion.slow), curve: Motion.expoOut);
@@ -173,7 +181,7 @@ class _MatchTabState extends State<MatchTab> {
               expand: true,
               onPressed: selected == null ? null : () => _run(selected),
             ),
-            if (_result != null && selected != null)
+            if (_result != null && selected != null && _resultFor == selected.id)
               KeyedSubtree(
                 key: _resultKey,
                 child: _Results(
@@ -219,6 +227,14 @@ class _Results extends StatelessWidget {
 
   Future<void> _tailorBullets(BuildContext context, ResumeStore store) async {
     final entries = _bulletEntries(resume);
+    if (entries.isEmpty) {
+      Toast.show(
+        context,
+        'Belum ada poin di Pengalaman atau Proyek. Isi dulu poinnya di editor CV, lalu coba lagi.',
+        tone: Tone.warning,
+      );
+      return;
+    }
     final out = await runAi(context, 'Menyesuaikan poin…', (ai) => ai.tailorBullets(job, entries));
     if (out == null || !context.mounted) return;
     final keep = await reviewBulletChanges(context, before: entries, after: out);
@@ -320,16 +336,14 @@ class _Results extends StatelessWidget {
             }
           },
         ),
-        if (_bulletEntries(resume).isNotEmpty) ...[
-          const SizedBox(height: 12),
-          ClayButton(
-            label: 'Sesuaikan poin pengalaman & proyek (AI)',
-            icon: HugeIcons.strokeRoundedAiMagic,
-            tone: ClayButtonTone.soft,
-            expand: true,
-            onPressed: () => _tailorBullets(context, store),
-          ),
-        ],
+        const SizedBox(height: 12),
+        ClayButton(
+          label: 'Sesuaikan poin pengalaman & proyek (AI)',
+          icon: HugeIcons.strokeRoundedAiMagic,
+          tone: ClayButtonTone.soft,
+          expand: true,
+          onPressed: () => _tailorBullets(context, store),
+        ),
         const SizedBox(height: 10),
         Center(
           child: Text(

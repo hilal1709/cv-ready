@@ -28,8 +28,8 @@ class KeywordMatcher {
       e.key: [
         for (final alias in {e.key.toLowerCase(), ...e.value})
           _caseSensitive.contains(alias)
-              ? RegExp('(?<![A-Za-z0-9+#])${RegExp.escape('${alias[0].toUpperCase()}${alias.substring(1)}')}(?![A-Za-z0-9+#])')
-              : RegExp('(?<![A-Za-z0-9+#])${RegExp.escape(alias)}(?![A-Za-z0-9+#])', caseSensitive: false),
+              ? RegExp('(?<![A-Za-z0-9+#-])${RegExp.escape('${alias[0].toUpperCase()}${alias.substring(1)}')}(?![A-Za-z0-9+#-])')
+              : RegExp('(?<![A-Za-z0-9+#-])${RegExp.escape(alias)}(?![A-Za-z0-9+#-])', caseSensitive: false),
       ],
   };
 
