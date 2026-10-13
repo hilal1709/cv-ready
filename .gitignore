@@ -55,3 +55,6 @@ app.*.map.json
 .claude/
 .impeccable/
 graphify-out/
+
+# markdown docs stay local
+*.md
