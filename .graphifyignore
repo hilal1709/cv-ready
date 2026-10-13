@@ -1,0 +1,6 @@
+.claude/
+.impeccable/
+design/
+build/
+android/
+tool/gen_lottie.py

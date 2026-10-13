@@ -1,0 +1,677 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-13T04:11:45.902425+00:00",
+  "title": "Design System: CV Ready",
+  "extensions": {
+    "colorMeta": {
+      "scarlet-rush": {
+        "role": "tertiary",
+        "displayName": "Scarlet Rush",
+        "canonical": "#DA2C38",
+        "tonalRamp": [
+          "#410D11",
+          "#6D161C",
+          "#991F27",
+          "#C02731",
+          "#E3616A",
+          "#EC969C",
+          "#F5C4C7",
+          "#FBE6E7"
+        ]
+      },
+      "turf-green": {
+        "role": "primary",
+        "displayName": "Turf Green",
+        "canonical": "#226F54",
+        "tonalRamp": [
+          "#0A2119",
+          "#11382A",
+          "#184E3B",
+          "#1E624A",
+          "#59937F",
+          "#90B7AA",
+          "#C1D7CF",
+          "#E4EEEA"
+        ]
+      },
+      "willow-green": {
+        "role": "secondary",
+        "displayName": "Willow Green",
+        "canonical": "#87C38F",
+        "tonalRamp": [
+          "#283A2B",
+          "#446248",
+          "#5E8864",
+          "#77AC7E",
+          "#A5D2AB",
+          "#C3E1C7",
+          "#DDEEE0",
+          "#F1F8F2"
+        ]
+      },
+      "lemon-chiffon": {
+        "role": "tertiary",
+        "displayName": "Lemon Chiffon",
+        "canonical": "#F4F0BB",
+        "tonalRamp": [
+          "#494838",
+          "#7A785E",
+          "#ABA883",
+          "#D7D3A5",
+          "#F7F4CC",
+          "#FAF8DD",
+          "#FCFBEC",
+          "#FEFDF7"
+        ]
+      },
+      "dark-coffee": {
+        "role": "neutral",
+        "displayName": "Dark Coffee",
+        "canonical": "#43291F",
+        "tonalRamp": [
+          "#140C09",
+          "#221410",
+          "#2F1D16",
+          "#3B241B",
+          "#725E57",
+          "#A1948F",
+          "#CAC3C0",
+          "#E8E5E4"
+        ]
+      },
+      "willow-ground": {
+        "role": "neutral",
+        "displayName": "Willow Ground",
+        "canonical": "#E9F1E4",
+        "tonalRamp": [
+          "#464844",
+          "#747872",
+          "#A3A9A0",
+          "#CDD4C9",
+          "#EEF4EB",
+          "#F4F8F2",
+          "#F9FBF7",
+          "#FCFDFC"
+        ]
+      },
+      "ground-surface": {
+        "role": "neutral",
+        "displayName": "Ground Surface",
+        "canonical": "#F5F9F3",
+        "tonalRamp": [
+          "#4A4B49",
+          "#7A7C7A",
+          "#ACAEAA",
+          "#D8DBD6",
+          "#F8FAF6",
+          "#FAFCF9",
+          "#FCFDFC",
+          "#FEFEFE"
+        ]
+      },
+      "lemon-raised": {
+        "role": "tertiary",
+        "displayName": "Lemon Raised",
+        "canonical": "#FCFAEB",
+        "tonalRamp": [
+          "#4C4B46",
+          "#7E7D76",
+          "#B0AFA4",
+          "#DEDCCF",
+          "#FDFBF0",
+          "#FEFCF5",
+          "#FEFEF9",
+          "#FFFEFD"
+        ]
+      },
+      "lemon-paper": {
+        "role": "tertiary",
+        "displayName": "Lemon Paper",
+        "canonical": "#F8F5D3",
+        "tonalRamp": [
+          "#4A4A3F",
+          "#7C7A6A",
+          "#AEAC94",
+          "#DAD8BA",
+          "#FAF8DE",
+          "#FCFAE9",
+          "#FDFCF3",
+          "#FEFEFA"
+        ]
+      },
+      "well-base": {
+        "role": "neutral",
+        "displayName": "Well Base",
+        "canonical": "#DFECDC",
+        "tonalRamp": [
+          "#434742",
+          "#70766E",
+          "#9CA59A",
+          "#C4D0C2",
+          "#E7F1E5",
+          "#EFF6EE",
+          "#F6FAF5",
+          "#FBFDFB"
+        ]
+      },
+      "coffee-muted": {
+        "role": "neutral",
+        "displayName": "Coffee Muted",
+        "canonical": "#8A7A74",
+        "tonalRamp": [
+          "#292523",
+          "#453D3A",
+          "#615551",
+          "#796B66",
+          "#A79B97",
+          "#C4BCBA",
+          "#DEDAD8",
+          "#F1EFEE"
+        ]
+      },
+      "coffee-line": {
+        "role": "neutral",
+        "displayName": "Coffee Line",
+        "canonical": "#E1DDDB",
+        "tonalRamp": [
+          "#444242",
+          "#706E6E",
+          "#9E9B99",
+          "#C6C2C1",
+          "#E8E6E4",
+          "#F0EEED",
+          "#F7F5F5",
+          "#FBFBFB"
+        ]
+      },
+      "turf-soft": {
+        "role": "primary",
+        "displayName": "Turf Soft",
+        "canonical": "#E0EBE7",
+        "tonalRamp": [
+          "#434645",
+          "#707674",
+          "#9DA4A2",
+          "#C5CFCB",
+          "#E8F0ED",
+          "#F0F5F3",
+          "#F6F9F8",
+          "#FBFDFC"
+        ]
+      },
+      "scarlet-soft": {
+        "role": "tertiary",
+        "displayName": "Scarlet Soft",
+        "canonical": "#FAE1E3",
+        "tonalRamp": [
+          "#4B4444",
+          "#7D7072",
+          "#AF9E9F",
+          "#DCC6C8",
+          "#FBE8EA",
+          "#FCF0F1",
+          "#FEF7F7",
+          "#FEFBFC"
+        ]
+      },
+      "turf-deep": {
+        "role": "primary",
+        "displayName": "Turf Deep",
+        "canonical": "#2E5641",
+        "tonalRamp": [
+          "#0E1A14",
+          "#172B20",
+          "#203C2E",
+          "#284C39",
+          "#628070",
+          "#96AAA0",
+          "#C4D0CA",
+          "#E6EBE8"
+        ]
+      },
+      "scarlet-deep": {
+        "role": "tertiary",
+        "displayName": "Scarlet Deep",
+        "canonical": "#AD2B30",
+        "tonalRamp": [
+          "#340D0E",
+          "#561618",
+          "#791E22",
+          "#98262A",
+          "#C26064",
+          "#D69598",
+          "#E8C4C5",
+          "#F5E6E6"
+        ]
+      },
+      "night-ground": {
+        "role": "neutral",
+        "displayName": "Night Ground",
+        "canonical": "#251711",
+        "tonalRamp": [
+          "#0B0705",
+          "#120C08",
+          "#1A100C",
+          "#21140F",
+          "#5C514C",
+          "#928B88",
+          "#C2BEBC",
+          "#E5E3E2"
+        ]
+      },
+      "night-surface": {
+        "role": "neutral",
+        "displayName": "Night Surface",
+        "canonical": "#372219",
+        "tonalRamp": [
+          "#100A08",
+          "#1C110C",
+          "#261812",
+          "#301E16",
+          "#695952",
+          "#9B908C",
+          "#C7C1BF",
+          "#E7E4E3"
+        ]
+      },
+      "night-paper": {
+        "role": "tertiary",
+        "displayName": "Night Paper",
+        "canonical": "#553D2F",
+        "tonalRamp": [
+          "#1A120E",
+          "#2A1E18",
+          "#3C2B21",
+          "#4B3629",
+          "#806E63",
+          "#AA9E97",
+          "#CFC9C5",
+          "#EBE8E6"
+        ]
+      },
+      "night-line": {
+        "role": "neutral",
+        "displayName": "Night Line",
+        "canonical": "#634D3B",
+        "tonalRamp": [
+          "#1E1712",
+          "#32261E",
+          "#453629",
+          "#574434",
+          "#8A7A6C",
+          "#B1A69D",
+          "#D3CDC8",
+          "#ECEAE7"
+        ]
+      },
+      "night-ink": {
+        "role": "neutral",
+        "displayName": "Night Ink",
+        "canonical": "#F8F6D6",
+        "tonalRamp": [
+          "#4A4A40",
+          "#7C7B6B",
+          "#AEAC96",
+          "#DAD8BC",
+          "#FAF8E0",
+          "#FCFAEA",
+          "#FDFCF4",
+          "#FEFEFA"
+        ]
+      },
+      "night-muted": {
+        "role": "neutral",
+        "displayName": "Night Muted",
+        "canonical": "#AA9C79",
+        "tonalRamp": [
+          "#332F24",
+          "#554E3C",
+          "#776D55",
+          "#96896A",
+          "#BFB59A",
+          "#D4CEBC",
+          "#E7E3D9",
+          "#F5F3EF"
+        ]
+      },
+      "night-slab": {
+        "role": "primary",
+        "displayName": "Night Slab",
+        "canonical": "#1A533F",
+        "tonalRamp": [
+          "#081913",
+          "#0D2A20",
+          "#123A2C",
+          "#174937",
+          "#537E6F",
+          "#8CA99F",
+          "#BFCFC9",
+          "#E4EAE8"
+        ]
+      },
+      "night-accent": {
+        "role": "tertiary",
+        "displayName": "Night Accent",
+        "canonical": "#DE4550",
+        "tonalRamp": [
+          "#431518",
+          "#6F2228",
+          "#9B3038",
+          "#C33D46",
+          "#E6747C",
+          "#EEA2A8",
+          "#F6CBCE",
+          "#FBE9EA"
+        ]
+      },
+      "night-danger": {
+        "role": "tertiary",
+        "displayName": "Night Danger",
+        "canonical": "#E1525C",
+        "tonalRamp": [
+          "#44191C",
+          "#70292E",
+          "#9E3940",
+          "#C64851",
+          "#E87D85",
+          "#F0A8AE",
+          "#F7CFD1",
+          "#FBEAEB"
+        ]
+      },
+      "night-success-soft": {
+        "role": "neutral",
+        "displayName": "Night Success Soft",
+        "canonical": "#524B38",
+        "tonalRamp": [
+          "#191611",
+          "#29261C",
+          "#393427",
+          "#484231",
+          "#7D786A",
+          "#A8A59C",
+          "#CFCDC7",
+          "#EAE9E7"
+        ]
+      },
+      "night-danger-soft": {
+        "role": "tertiary",
+        "displayName": "Night Danger Soft",
+        "canonical": "#6D2A26",
+        "tonalRamp": [
+          "#210D0B",
+          "#361513",
+          "#4C1D1B",
+          "#602521",
+          "#925F5C",
+          "#B69492",
+          "#D6C3C2",
+          "#EDE5E5"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display-large": {
+        "displayName": "Display Large",
+        "purpose": "Splash and hero moments only."
+      },
+      "headline-large": {
+        "displayName": "Headline Large",
+        "purpose": "Greeting on the home Turf slab."
+      },
+      "headline-small": {
+        "displayName": "Headline Small",
+        "purpose": "Every section, dialog and sheet title."
+      },
+      "title-large": {
+        "displayName": "Title Large",
+        "purpose": "App bar titles."
+      },
+      "title-medium": {
+        "displayName": "Title Medium",
+        "purpose": "Card titles."
+      },
+      "title-small": {
+        "displayName": "Title Small",
+        "purpose": "Field labels, toast and banner text."
+      },
+      "body-large": {
+        "displayName": "Body Large",
+        "purpose": "Field input text and slab body copy."
+      },
+      "label-large": {
+        "displayName": "Label Large",
+        "purpose": "Button labels."
+      },
+      "label-medium": {
+        "displayName": "Label Medium",
+        "purpose": "Muted metadata and nav labels."
+      }
+    },
+    "shadows": [
+      {
+        "name": "clay-rim-highlight",
+        "value": "-4px -4px 12px -2px rgba(255,255,255,0.75)",
+        "purpose": "Top-left light bloom on every raised clay body (scaled by depth; 6% alpha in dark; dropped when pressed)."
+      },
+      {
+        "name": "clay-drop",
+        "value": "0 12px 28px -6px rgba(67,41,31,0.16)",
+        "purpose": "Body weight, coffee-tinted (black at 45% in dark); offset and blur scale with depth."
+      },
+      {
+        "name": "clay-contact",
+        "value": "0 3px 6px -1px rgba(67,41,31,0.10)",
+        "purpose": "Tight contact shadow grounding the body (black at 35% in dark)."
+      },
+      {
+        "name": "clay-pressed",
+        "value": "depth x 0.35, gradient inverted, scale 0.975",
+        "purpose": "Press state for every ClayPressable."
+      },
+      {
+        "name": "well-inset",
+        "value": "linear-gradient(180deg, base mixed 7% toward coffee 0%, base 22%, base 100%) + 1px line border",
+        "purpose": "Recessed inputs, tracks and unselected options."
+      }
+    ],
+    "motion": [
+      {
+        "name": "expo-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Arrivals: tab switch, toast drop, banner slide, stamp fill, logo lines."
+      },
+      {
+        "name": "power3-out",
+        "value": "cubic-bezier(0.215, 0.61, 0.355, 1)",
+        "purpose": "Press squash and state changes."
+      },
+      {
+        "name": "power2-in-out",
+        "value": "cubic-bezier(0.645, 0.045, 0.355, 1)",
+        "purpose": "Illustration float loop (6px, 2.4s, reversing)."
+      },
+      {
+        "name": "back-out",
+        "value": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+        "purpose": "Pops with overshoot: dialogs (0.86 to 1, 420ms), busy card, logo dot squash."
+      },
+      {
+        "name": "fast",
+        "value": "160ms",
+        "purpose": "Press, selection."
+      },
+      {
+        "name": "medium",
+        "value": "320ms",
+        "purpose": "Tab switch, banner entry."
+      },
+      {
+        "name": "slow",
+        "value": "560ms",
+        "purpose": "Larger choreography."
+      },
+      {
+        "name": "stagger",
+        "value": "55ms",
+        "purpose": "List item stagger."
+      },
+      {
+        "name": "stamp-fill",
+        "value": "1100ms expo-out; squash 520ms",
+        "purpose": "Readiness Stamp ink rise and full-stop squash."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "Motion.of(context, d) returns zero when the system disables animations",
+        "purpose": "Every animation honours Remove animations."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "phone",
+        "value": "single column; dialogs cap at 420px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Turf clay pill with Lemon label; the one main action per view.",
+      "html": "<button class=\"ds-btn-primary\">Simpan CV</button>",
+      "css": ".ds-btn-primary { font-family: Figtree, system-ui, sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 0.1px; color: #F4F0BB; border: none; border-radius: 22px; padding: 16px 22px; min-height: 52px; cursor: pointer; background: linear-gradient(135deg, #2C7660 0%, #226F54 55%, #28694F 100%); box-shadow: -3.2px -3.2px 9.6px -2px rgba(255,255,255,0.75), 0 9.6px 22.4px -6px rgba(67,41,31,0.128), 0 2.4px 4.8px -1px rgba(67,41,31,0.080); transition: transform 160ms cubic-bezier(0.215, 0.61, 0.355, 1), box-shadow 160ms cubic-bezier(0.215, 0.61, 0.355, 1); } .ds-btn-primary:active { transform: scale(0.975); box-shadow: 0 4px 10px -6px rgba(67,41,31,0.06), 0 1px 2px -1px rgba(67,41,31,0.04); background: linear-gradient(135deg, #28694F 0%, #226F54 55%, #2C7660 100%); } .ds-btn-primary:focus-visible { outline: 2px solid #87C38F; outline-offset: 3px; }"
+    },
+    {
+      "name": "Accent Button",
+      "kind": "button",
+      "refersTo": "button-accent",
+      "description": "Scarlet clay pill reserved for destructive confirmation.",
+      "html": "<button class=\"ds-btn-accent\">Hapus CV</button>",
+      "css": ".ds-btn-accent { font-family: Figtree, system-ui, sans-serif; font-size: 15px; font-weight: 700; color: #FFFFFF; border: none; border-radius: 22px; padding: 16px 22px; min-height: 52px; cursor: pointer; background: linear-gradient(135deg, #DB3843 0%, #DA2C38 55%, #C92F37 100%); box-shadow: -3.2px -3.2px 9.6px -2px rgba(255,255,255,0.75), 0 9.6px 22.4px -6px rgba(67,41,31,0.128), 0 2.4px 4.8px -1px rgba(67,41,31,0.080); transition: transform 160ms cubic-bezier(0.215, 0.61, 0.355, 1), box-shadow 160ms cubic-bezier(0.215, 0.61, 0.355, 1); } .ds-btn-accent:active { transform: scale(0.975); box-shadow: 0 4px 10px -6px rgba(67,41,31,0.06), 0 1px 2px -1px rgba(67,41,31,0.04); } .ds-btn-accent:focus-visible { outline: 2px solid #43291F; outline-offset: 3px; }"
+    },
+    {
+      "name": "Soft Button",
+      "kind": "button",
+      "refersTo": "button-soft",
+      "description": "Lemon clay pill with Coffee label; secondary action, used on Turf slabs.",
+      "html": "<button class=\"ds-btn-soft\">Lihat saran</button>",
+      "css": ".ds-btn-soft { font-family: Figtree, system-ui, sans-serif; font-size: 15px; font-weight: 700; color: #43291F; border: none; border-radius: 22px; padding: 12px 16px; min-height: 48px; cursor: pointer; background: linear-gradient(135deg, #F7F5CF 0%, #F4F0BB 55%, #E6DFAC 100%); box-shadow: -3.2px -3.2px 9.6px -2px rgba(255,255,255,0.75), 0 9.6px 22.4px -6px rgba(67,41,31,0.128), 0 2.4px 4.8px -1px rgba(67,41,31,0.080); transition: transform 160ms cubic-bezier(0.215, 0.61, 0.355, 1); } .ds-btn-soft:active { transform: scale(0.975); box-shadow: 0 4px 10px -6px rgba(67,41,31,0.06), 0 1px 2px -1px rgba(67,41,31,0.04); } .ds-btn-soft:focus-visible { outline: 2px solid #226F54; outline-offset: 3px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Flat Turf text button; the cancel partner in dialogs.",
+      "html": "<button class=\"ds-btn-ghost\">Batal</button>",
+      "css": ".ds-btn-ghost { font-family: Figtree, system-ui, sans-serif; font-size: 15px; font-weight: 700; color: #226F54; background: transparent; border: none; border-radius: 22px; padding: 16px 22px; min-height: 48px; cursor: pointer; transition: background 160ms cubic-bezier(0.215, 0.61, 0.355, 1); } .ds-btn-ghost:hover { background: rgba(34,111,84,0.08); } .ds-btn-ghost:focus-visible { outline: 2px solid #226F54; outline-offset: 2px; }"
+    },
+    {
+      "name": "Clay Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Recessed clay well: darker top edge, line border, Turf focus.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field-label\">Nama lengkap</span><input class=\"ds-field-input\" placeholder=\"Nama sesuai KTP\"></label>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 8px; font-family: Figtree, system-ui, sans-serif; } .ds-field-label { font-size: 14px; font-weight: 600; color: #43291F; padding-left: 4px; } .ds-field-input { font-family: Figtree, system-ui, sans-serif; font-size: 16px; color: #43291F; border-radius: 22px; padding: 16px; border: 1px solid #E1DDDB; background: linear-gradient(180deg, #D5DED0 0%, #DFECDC 22%, #DFECDC 100%); outline: none; transition: border-color 160ms cubic-bezier(0.215, 0.61, 0.355, 1); } .ds-field-input::placeholder { color: rgba(138,122,116,0.75); } .ds-field-input:focus-visible { border: 1.8px solid #226F54; }"
+    },
+    {
+      "name": "CV Sheet",
+      "kind": "card",
+      "refersTo": "cv-sheet",
+      "description": "Lemon paper clay card listing a CV with its score.",
+      "html": "<div class=\"ds-sheet\" tabindex=\"0\"><div class=\"ds-sheet-body\"><div class=\"ds-sheet-title\">Frontend Engineer</div><div class=\"ds-sheet-sub\">Flutter developer, 4 tahun</div><div class=\"ds-sheet-meta\">Classic · 2 jam lalu</div></div><div class=\"ds-sheet-score\"><b>86</b><span>skor</span></div></div>",
+      "css": ".ds-sheet { display: flex; align-items: center; gap: 16px; border-radius: 28px; padding: 16px 18px; font-family: Figtree, system-ui, sans-serif; color: #43291F; background: linear-gradient(135deg, #FAF8E0 0%, #F8F5D3 55%, #ECE6C8 100%); box-shadow: -4px -4px 12px -2px rgba(255,255,255,0.75), 0 12px 28px -6px rgba(67,41,31,0.160), 0 3px 6px -1px rgba(67,41,31,0.100); transition: transform 160ms cubic-bezier(0.215, 0.61, 0.355, 1); cursor: pointer; } .ds-sheet:active { transform: scale(0.975); box-shadow: 0 4px 10px -6px rgba(67,41,31,0.06), 0 1px 2px -1px rgba(67,41,31,0.04); } .ds-sheet:focus-visible { outline: 2px solid #226F54; outline-offset: 3px; } .ds-sheet-body { flex: 1; } .ds-sheet-title { font-size: 16px; font-weight: 700; } .ds-sheet-sub { font-size: 14.5px; margin-top: 3px; } .ds-sheet-meta { font-size: 13px; font-weight: 600; color: #8A7A74; margin-top: 8px; } .ds-sheet-score { display: flex; flex-direction: column; align-items: center; } .ds-sheet-score b { font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 22px; font-weight: 700; color: #226F54; font-variant-numeric: tabular-nums; } .ds-sheet-score span { font-size: 11.5px; font-weight: 600; color: #8A7A74; }"
+    },
+    {
+      "name": "Bottom Navigation",
+      "kind": "nav",
+      "refersTo": "nav-bar",
+      "description": "Clay slab docked at the bottom with a Lemon indicator.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-item ds-active\" href=\"#\"><i></i>CV Saya</a><a class=\"ds-nav-item\" href=\"#\"><i></i>Cocokkan</a><a class=\"ds-nav-item\" href=\"#\"><i></i>Akun</a></nav>",
+      "css": ".ds-nav { display: flex; height: 72px; border-radius: 36px 36px 0 0; background: linear-gradient(135deg, #FDFCF2 0%, #FCFAEB 55%, #E9E4D9 100%); box-shadow: -3.6px -3.6px 10.8px -2px rgba(255,255,255,0.75), 0 10.8px 25.2px -6px rgba(67,41,31,0.144), 0 2.7px 5.4px -1px rgba(67,41,31,0.090); font-family: Figtree, system-ui, sans-serif; } .ds-nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 13px; font-weight: 600; color: #8A7A74; text-decoration: none; } .ds-nav-item i { width: 56px; height: 28px; border-radius: 14px; } .ds-nav-item.ds-active { color: #43291F; font-weight: 700; } .ds-nav-item.ds-active i { background: #F4F0BB; } .ds-nav-item:hover { color: #43291F; } .ds-nav-item:focus-visible { outline: 2px solid #226F54; outline-offset: -4px; border-radius: 16px; }"
+    },
+    {
+      "name": "Toast",
+      "kind": "custom",
+      "refersTo": "toast-success",
+      "description": "Clay pill that drops from the top and squashes on landing.",
+      "html": "<div class=\"ds-toast\" role=\"status\"><span class=\"ds-toast-dot\"></span>CV tersimpan</div>",
+      "css": ".ds-toast { display: flex; align-items: center; gap: 12px; border-radius: 24px; padding: 14px 16px; font-family: Figtree, system-ui, sans-serif; font-size: 14px; font-weight: 600; color: #F4F0BB; background: linear-gradient(135deg, #2C7660 0%, #226F54 55%, #28694F 100%); box-shadow: -4px -4px 12px -2px rgba(255,255,255,0.75), 0 12px 28px -6px rgba(67,41,31,0.160), 0 3px 6px -1px rgba(67,41,31,0.100); animation: ds-drop 620ms cubic-bezier(0.16, 1, 0.3, 1) both; } .ds-toast-dot { width: 10px; height: 10px; border-radius: 50%; background: #F4F0BB; } @keyframes ds-drop { 0% { transform: translateY(-90px); opacity: 0; } 55% { transform: translateY(0); opacity: 1; } 75% { transform: scale(1.04, 0.94); } 100% { transform: scale(1, 1); } } @media (prefers-reduced-motion: reduce) { .ds-toast { animation: none; } }"
+    },
+    {
+      "name": "Readiness Stamp",
+      "kind": "custom",
+      "refersTo": "readiness-stamp",
+      "description": "Signature lemon clay disc whose ink rises to the ATS score.",
+      "html": "<div class=\"ds-stamp\" role=\"img\" aria-label=\"Skor kesiapan ATS 86 dari 100\"><div class=\"ds-stamp-ink\"></div><div class=\"ds-stamp-num\">86<small>siap ATS</small></div></div>",
+      "css": ".ds-stamp { position: relative; width: 132px; height: 132px; border-radius: 50%; overflow: hidden; background: radial-gradient(circle at 30% 28%, #FAF8E0 0%, #F4F0BB 55%, #D4CC9F 100%); box-shadow: 0 21px 18px -8px rgba(0,0,0,0.16); transform-origin: bottom; transition: transform 520ms cubic-bezier(0.34, 1.56, 0.64, 1); } .ds-stamp-ink { position: absolute; left: 0; right: 0; bottom: 0; height: 81%; background: linear-gradient(180deg, #59937F, #226F54); opacity: 0.85; } .ds-stamp-num { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 45px; font-weight: 800; letter-spacing: -1.5px; line-height: 1; color: #F4F0BB; font-variant-numeric: tabular-nums; } .ds-stamp-num small { font-family: Figtree, system-ui, sans-serif; font-size: 12.5px; font-weight: 700; letter-spacing: 0; opacity: 0.85; } .ds-stamp:hover { transform: scale(1.06, 0.94); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Clay Workshop",
+    "overview": "The CV is a lump of clay the user presses into shape until it is \"ready\". Every surface in the app is a soft extruded clay body lit from the top-left: a diagonal light-to-base-to-shade gradient for volume, a coffee-tinted drop shadow with a real downward offset plus a tight contact shadow for weight, and a pale highlight bloom on the top-left rim. Pressing a body sinks it: the gradient inverts, the shadow shrinks to 35%, and the body scales to 0.975. Inputs are the inverse, recessed wells darker along their top edge.\n\nThe world is warm and handmade rather than corporate. A willow-tinted ground carries Turf Green slabs (the shell, primary actions, the home header), Lemon Chiffon paper (where the CV lives), Dark Coffee ink, and a single Scarlet \"full stop\" that marks what still needs attention. The dark theme is not grey: it moves the whole world into the Dark Coffee family, with Willow taking over the primary role. Density is phone-first: a 16dp gutter, short cards, one primary action per view, a bottom navigation slab. The playfulness ends at the export: the generated CV PDF stays plain, single-column real text, because ATS readability beats decoration.\n\nIt explicitly rejects the category default of a grey form wizard with a blue progress bar.",
+    "keyCharacteristics": [
+      "Five binding brand colours; every UI colour is one of them or a mix of them.",
+      "Claymorphism everywhere: `Clay.box` for raised bodies, `Clay.well` for recessed inputs and unselected options.",
+      "Generous, soft radii (16 to 36dp); nothing is square except edge-docked slabs on their docked side.",
+      "Bricolage Grotesque (800/700, tight negative tracking) for display; Figtree for everything readable.",
+      "GSAP-named motion: expo.out arrivals, back.out pops, squash-on-landing; all of it honours \"Remove animations\".",
+      "Signature: the Readiness Stamp, a lemon clay disc whose ink rises to the ATS score and squashes like the logo's full stop."
+    ],
+    "rules": [
+      {
+        "name": "The Five-Colour Rule",
+        "body": "Every colour on screen resolves to one of the five brand colours or a `Color.lerp` of them with white, black or each other. No new hues, no Material defaults showing through.",
+        "section": "colors"
+      },
+      {
+        "name": "The Full Stop Rule",
+        "body": "Scarlet means \"this still needs you\": low score, missing keyword, error, delete. It is never used for decoration or for a neutral primary action.",
+        "section": "colors"
+      },
+      {
+        "name": "The Lemon-On-Turf Rule",
+        "body": "Text on Turf (light or dark slab) is Lemon Chiffon, never white; text on Lemon is Dark Coffee.",
+        "section": "colors"
+      },
+      {
+        "name": "The No Eyebrow Rule",
+        "body": "Section headings are a single Headline Small line with an optional trailing action. No kicker or eyebrow labels above them.",
+        "section": "typography"
+      },
+      {
+        "name": "The Display-Is-Bricolage Rule",
+        "body": "Bricolage appears only at headline size and above, in the wordmark, and in score numerals. Everything readable at length is Figtree.",
+        "section": "typography"
+      },
+      {
+        "name": "The Pressed-In Rule",
+        "body": "Press inverts the gradient, multiplies depth by 0.35 and scales to 0.975 over 160ms power3.out, with a selection-click haptic. Nothing lifts on press.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Coffee Shadow Rule",
+        "body": "Light-mode shadows are tinted Dark Coffee, never neutral black or grey.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do build every raised surface with `Clay.box` and every input or unselected option with `Clay.well`; pick a depth from the established steps (0.55 to 1.4).",
+      "Do read colours from `context.clay` so light and dark both work; use raw `Palette` only for brand-fixed elements (logo, stamp, toast tones).",
+      "Do put Lemon text on Turf and Coffee text on Lemon.",
+      "Do use the `Motion` curves and durations (fast 160ms, medium 320ms, slow 560ms, stagger 55ms) and wrap durations in `Motion.of` so \"Remove animations\" yields zero.",
+      "Do keep touch targets at 48dp or larger and give every pressable a semantic label.",
+      "Do use Hugeicons stroke-rounded at 1.8 stroke via `Hi`, and prefer illustrations over clusters of icons.",
+      "Do keep the exported CV plain: single column, real text, standard fonts."
+    ],
+    "donts": [
+      "Don't introduce a colour that is not one of the five brand colours or a mix of them.",
+      "Don't use Scarlet for anything other than attention, low score or destruction.",
+      "Don't use flat Material cards, neutral grey shadows, or a grey-and-blue form-wizard look.",
+      "Don't add kicker or eyebrow labels above section titles.",
+      "Don't use a spinner or progress ring for loading; use the pebble `ClayLoader`.",
+      "Don't carry clay styling, colour or illustrations into the exported PDF."
+    ]
+  }
+}

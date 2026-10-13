@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 260">
+<defs>
+<radialGradient id="gS" cx="30%" cy="28%" r="80%"><stop offset="0" stop-color="#EC8189"/><stop offset=".55" stop-color="#DA2C38"/><stop offset="1" stop-color="#A9262E"/></radialGradient>
+<radialGradient id="gT" cx="30%" cy="28%" r="80%"><stop offset="0" stop-color="#6E9C8B"/><stop offset=".55" stop-color="#226F54"/><stop offset="1" stop-color="#2A5B44"/></radialGradient>
+<radialGradient id="gW" cx="30%" cy="28%" r="80%"><stop offset="0" stop-color="#BEDCC1"/><stop offset=".55" stop-color="#87C38F"/><stop offset="1" stop-color="#6E9670"/></radialGradient>
+<radialGradient id="gL" cx="30%" cy="26%" r="85%"><stop offset="0" stop-color="#FBF9E3"/><stop offset=".55" stop-color="#F4F0BB"/><stop offset="1" stop-color="#D7CC9A"/></radialGradient>
+<radialGradient id="gC" cx="30%" cy="28%" r="80%"><stop offset="0" stop-color="#8A6F64"/><stop offset=".55" stop-color="#43291F"/><stop offset="1" stop-color="#2E1B14"/></radialGradient>
+</defs>
+<ellipse cx="150" cy="236" rx="112" ry="12" fill="#43291F" fill-opacity=".12"/>
+<rect x="56" y="34" width="150" height="188" rx="28" fill="url(#gL)" transform="rotate(-4 131 128)"/>
+<rect x="80" y="70" width="96" height="14" rx="7" fill="#226F54" transform="rotate(-4 131 128)"/>
+<rect x="80" y="98" width="70" height="14" rx="7" fill="#226F54" fill-opacity=".45" transform="rotate(-4 131 128)"/>
+<rect x="80" y="126" width="84" height="14" rx="7" fill="#43291F" fill-opacity=".12" transform="rotate(-4 131 128)"/>
+<rect x="80" y="154" width="54" height="14" rx="7" fill="#43291F" fill-opacity=".12" transform="rotate(-4 131 128)"/>
+<path d="M236 70c6 22 14 30 36 36-22 6-30 14-36 36-6-22-14-30-36-36 22-6 30-14 36-36z" fill="url(#gS)"/>
+<path d="M266 150c3 11 7 15 18 18-11 3-15 7-18 18-3-11-7-15-18-18 11-3 15-7 18-18z" fill="url(#gW)"/>
+<path d="M206 30c2 8 5 11 13 13-8 2-11 5-13 13-2-8-5-11-13-13 8-2 11-5 13-13z" fill="url(#gT)"/>
+<circle cx="180" cy="168" r="30" fill="url(#gW)"/>
+<path d="M168 168l9 9 16-18" fill="none" stroke="#226F54" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
