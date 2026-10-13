@@ -50,5 +50,8 @@ app.*.map.json
 # secrets
 .env.json
 
-# graphify
-graphify-out/cache/
+
+# local tooling (not for the repo)
+.claude/
+.impeccable/
+graphify-out/
