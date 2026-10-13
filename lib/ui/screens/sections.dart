@@ -302,6 +302,82 @@ Future<bool> reviewSuggestion(BuildContext context, {required String before, req
   return ok ?? false;
 }
 
+/// Shows AI-rewritten bullets per entry next to the originals, each with its
+/// own "Pakai" toggle. Returns the ids the user kept (empty when cancelled).
+Future<Set<String>> reviewBulletChanges(
+  BuildContext context, {
+  required Map<String, ({String title, List<String> bullets})> before,
+  required Map<String, List<String>> after,
+}) async {
+  final keep = after.keys.toSet();
+  final ok = await showClayDialog<bool>(
+    context,
+    title: 'Saran AI',
+    message: 'Periksa faktanya. Ganti [placeholder] dengan angka aslimu.',
+    body: StatefulBuilder(
+      builder: (ctx, setState) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          for (final id in after.keys) ...[
+            Row(
+              children: [
+                Expanded(child: Text(before[id]!.title, style: ctx.text.titleSmall)),
+                Text('Pakai', style: ctx.text.labelMedium),
+                Checkbox(
+                  value: keep.contains(id),
+                  activeColor: ctx.clay.primary,
+                  onChanged: (v) => setState(() => v == true ? keep.add(id) : keep.remove(id)),
+                ),
+              ],
+            ),
+            Text('Sebelum', style: ctx.text.labelMedium),
+            const SizedBox(height: 4),
+            for (final b in before[id]!.bullets)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Text('• $b', style: ctx.text.bodyMedium!.copyWith(color: ctx.clay.inkMuted)),
+              ),
+            const SizedBox(height: 10),
+            Text('Sesudah', style: ctx.text.labelMedium!.copyWith(color: ctx.clay.primary)),
+            const SizedBox(height: 4),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(14),
+              decoration: Clay.box(
+                ctx,
+                color: ctx.isDark ? ctx.clay.slab : Palette.lemon,
+                radius: 18,
+                depth: 0.4,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  for (final b in after[id]!)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 6),
+                      child: Text('• $b', style: ctx.text.bodyMedium),
+                    ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+          ],
+        ],
+      ),
+    ),
+    actions: (ctx) => [
+      ClayButton(label: 'Batal', tone: ClayButtonTone.ghost, onPressed: () => Navigator.pop(ctx, false)),
+      ClayButton(
+        label: 'Terapkan',
+        compact: true,
+        icon: HugeIcons.strokeRoundedTick02,
+        onPressed: () => Navigator.pop(ctx, true),
+      ),
+    ],
+  );
+  return ok == true ? keep : const {};
+}
+
 class _Tip extends StatelessWidget {
   const _Tip(this.text);
   final String text;

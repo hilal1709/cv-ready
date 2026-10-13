@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
 import '../core/env.dart';
 import '../data/models.dart';
+import 'keyword_matcher.dart';
 
 class AiException implements Exception {
   AiException(this.message);
@@ -16,7 +18,9 @@ class AiException implements Exception {
 /// set, otherwise Google Gemini (which has a free tier) when GEMINI_API_KEY
 /// is set. Both over raw HTTP. Nothing is sent until the user taps an AI action.
 class AiService {
-  static const _claudeModel = 'claude-opus-5-5';
+  /// Haiku: the cheapest Claude model, plenty for short CV rewrites.
+  static const _claudeModel = 'claude-haiku-5-5';
+  static const _geminiBackup = 'gemini-flash-lite-latest';
   static final _claudeUri = Uri.parse('https://api.anthropic.com/v1/messages');
 
   static const _system = '''
@@ -27,7 +31,7 @@ Rules:
 - Prefer concrete outcomes and numbers. Never invent numbers, employers, tools or achievements: if a metric is unknown, write the sentence so it reads well without one, or use a bracketed placeholder like [X%] the user can fill in.
 - Plain text only. No markdown, no headings, no quotes around the answer, no commentary.''';
 
-  Future<String> _ask(String prompt, {int maxTokens = 2000}) async {
+  Future<String> _ask(String prompt, {int maxTokens = 2000, bool json = false}) async {
     if (!Env.hasAi) {
       throw AiException(
         'Fitur AI belum aktif. Isi GEMINI_API_KEY atau ANTHROPIC_API_KEY di .env.json lalu build ulang.',
@@ -38,10 +42,16 @@ Rules:
       if (Env.anthropicKey.isNotEmpty) {
         res = await _postClaude(prompt, maxTokens).timeout(const Duration(seconds: 90));
       } else {
-        var r = await _postGemini(prompt, maxTokens, Env.geminiModel).timeout(const Duration(seconds: 90));
-        // Free-tier Flash is often overloaded (503); fall back to Flash-Lite once.
-        if (r.statusCode == 503 || r.statusCode == 429) {
-          r = await _postGemini(prompt, maxTokens, 'gemini-flash-lite-latest').timeout(const Duration(seconds: 90));
+        // Free-tier models are often overloaded (503) or hang; try a second model once.
+        final backup = Env.geminiModel == _geminiBackup ? 'gemini-flash-latest' : _geminiBackup;
+        http.Response? r;
+        try {
+          r = await _postGemini(prompt, maxTokens, Env.geminiModel, json: json).timeout(const Duration(seconds: 20));
+        } on TimeoutException {
+          r = null;
+        }
+        if (r == null || r.statusCode == 503 || r.statusCode == 429) {
+          r = await _postGemini(prompt, maxTokens, backup, json: json).timeout(const Duration(seconds: 40));
         }
         res = r;
       }
@@ -71,13 +81,10 @@ Rules:
       'content-type': 'application/json',
       'x-api-key': Env.anthropicKey,
       'anthropic-version': '2023-06-01',
-      'anthropic-beta': 'server-side-fallback-2026-07-01',
     },
     body: jsonEncode({
       'model': _claudeModel,
       'max_tokens': maxTokens,
-      'fallbacks': 'default',
-      'output_config': {'effort': 'low'},
       'system': _system,
       'messages': [
         {'role': 'user', 'content': prompt},
@@ -97,7 +104,7 @@ Rules:
         .trim();
   }
 
-  Future<http.Response> _postGemini(String prompt, int maxTokens, String model) => http.post(
+  Future<http.Response> _postGemini(String prompt, int maxTokens, String model, {bool json = false}) => http.post(
     Uri.parse('https://generativelanguage.googleapis.com/v1beta/models/$model:generateContent'),
     headers: {'content-type': 'application/json', 'x-goog-api-key': Env.geminiKey},
     body: jsonEncode({
@@ -114,7 +121,12 @@ Rules:
           ],
         },
       ],
-      'generationConfig': {'maxOutputTokens': maxTokens},
+      // Thinking tokens count against maxOutputTokens; keep them low so the answer isn't cut off.
+      'generationConfig': {
+        'maxOutputTokens': maxTokens + 1500,
+        'thinkingConfig': {'thinkingLevel': 'low'},
+        if (json) 'responseMimeType': 'application/json',
+      },
     }),
   );
 
@@ -169,4 +181,83 @@ Rules:
     'Roles: ${d.experiences.map((e) => e.role).join(', ')}\n\nJob post:\n$jobPost',
     maxTokens: 800,
   );
+
+  /// Parses a JSON object out of an AI answer, tolerating code fences or a
+  /// sentence around it.
+  static Map<String, dynamic> _decodeJson(String text) {
+    final start = text.indexOf('{');
+    final end = text.lastIndexOf('}');
+    if (start >= 0 && end > start) {
+      try {
+        final v = jsonDecode(text.substring(start, end + 1));
+        if (v is Map<String, dynamic>) return v;
+      } on FormatException {
+        // fall through
+      }
+    }
+    throw AiException('AI memberi jawaban yang tidak terbaca. Coba lagi.');
+  }
+
+  static List<String> _strings(Object? v) =>
+      (v is List ? v : const []).map((e) => '$e'.trim()).where((e) => e.isNotEmpty).toList();
+
+  /// Reads which skills a job post asks for and which of them the CV shows.
+  Future<KeywordMatch> matchSkills(String jobPost, ResumeData d) async {
+    final text = await _ask(
+      'Compare the job post with the CV below.\n'
+      'List the skills the job post asks for: hard skills, tools, technologies, methods, certifications, '
+      'spoken languages, and soft skills the post names explicitly. At most 20, most important first.\n'
+      'Do NOT include cities, company names, benefits, job titles, years of experience, education levels, '
+      'or generic words (e.g. "customer", "growth", "business").\n'
+      'Use a short standard name for each skill (e.g. "React", "Microsoft Excel", "Komunikasi"), '
+      'in the language the job post uses.\n'
+      'Put a skill in "matched" if the CV clearly shows it, including synonyms or more specific versions '
+      '(ReactJS counts as React). Otherwise put it in "missing".\n'
+      'Answer with JSON only: {"matched": ["..."], "missing": ["..."]}\n\n'
+      'Job post:\n$jobPost\n\nCV:\n${d.plainText}',
+      maxTokens: 1200,
+      json: true,
+    );
+    final j = _decodeJson(text);
+    final matched = _strings(j['matched']);
+    final missing = _strings(j['missing']).where((m) => !matched.contains(m)).toList();
+    if (matched.isEmpty && missing.isEmpty) throw AiException('AI tidak menemukan skill di lowongan ini.');
+    return KeywordMatch(matched: matched, missing: missing, byAi: true);
+  }
+
+  /// Rewrites the bullets of each entry (experience or project) toward the
+  /// job post. Returns new bullets by entry id; entries the AI skipped or
+  /// whose bullet count changed are left out.
+  Future<Map<String, List<String>>> tailorBullets(
+    String jobPost,
+    Map<String, ({String title, List<String> bullets})> entries,
+  ) async {
+    final input = jsonEncode({
+      'items': [
+        for (final e in entries.entries) {'id': e.key, 'title': e.value.title, 'bullets': e.value.bullets},
+      ],
+    });
+    final text = await _ask(
+      'Rewrite the CV bullet points below so they target the job post.\n'
+      'Rules:\n'
+      '- Keep every item and the same number of bullets in the same order.\n'
+      '- Keep the facts. Use the job post\'s terms only where they truly describe what the bullet already says.\n'
+      '- Never add skills, tools, employers or numbers that are not in the original bullet; '
+      'a bracketed placeholder like [X%] is allowed.\n'
+      '- One line per bullet, strong action verb first, same language as the original bullet.\n'
+      'Answer with JSON only, same shape as the input: {"items": [{"id": "...", "bullets": ["..."]}]}\n\n'
+      'Job post:\n$jobPost\n\nInput:\n$input',
+      maxTokens: 3000,
+      json: true,
+    );
+    final out = <String, List<String>>{};
+    for (final item in (_decodeJson(text)['items'] as List? ?? const []).whereType<Map>()) {
+      final id = '${item['id']}';
+      final bullets = _strings(item['bullets']);
+      final before = entries[id]?.bullets;
+      if (before != null && bullets.length == before.length) out[id] = bullets;
+    }
+    if (out.isEmpty) throw AiException('AI tidak memberi saran. Coba lagi.');
+    return out;
+  }
 }

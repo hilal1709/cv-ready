@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/env.dart';
 import '../../core/motion.dart';
 import '../../core/theme/clay.dart';
 import '../../core/theme/palette.dart';
@@ -36,38 +37,49 @@ class _MatchTabState extends State<MatchTab> {
     super.dispose();
   }
 
-  void _run(Resume r) {
+  Future<void> _run(Resume r) async {
     FocusScope.of(context).unfocus();
     if (_job.text.trim().split(RegExp(r'\s+')).length < 25) {
       Toast.show(context, 'Tempel deskripsi lowongan yang lengkap (minimal beberapa kalimat).', tone: Tone.warning);
       return;
     }
-    setState(() => _result = KeywordMatcher.match(_job.text, r.data.plainText));
+    // AI reads skills (and synonyms) properly; the offline dictionary is the fallback.
+    final viaAi = Env.hasAi
+        ? await runAi(context, 'Membaca lowongan…', (ai) => ai.matchSkills(_job.text, r.data))
+        : null;
+    if (!mounted) return;
+    setState(() => _result = viaAi ?? KeywordMatcher.match(_job.text, r.data.plainText));
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final ctx = _resultKey.currentContext;
       if (ctx != null) Scrollable.ensureVisible(ctx, duration: Motion.of(context, Motion.slow), curve: Motion.expoOut);
     });
   }
 
-  void _addSkill(Resume r, String k) {
+  void _addSkill(Resume r, String skill) {
     final store = context.read<ResumeStore>();
-    final label = k
-        .split(' ')
-        .map((w) => w.length <= 3 ? w.toUpperCase() : '${w[0].toUpperCase()}${w.substring(1)}')
-        .join(' ');
-    if (r.data.skills.any((s) => s.toLowerCase() == k)) return;
-    r.data.skills.add(label);
+    final result = _result!;
+    final had = r.data.skills.any((s) => s.toLowerCase() == skill.toLowerCase());
+    if (!had) r.data.skills.add(skill);
     store.touch(r);
-    setState(() => _result = KeywordMatcher.match(_job.text, r.data.plainText));
+    // Move it locally instead of re-reading the job post (no second AI call).
+    setState(() {
+      result.missing.remove(skill);
+      result.matched.add(skill);
+    });
     Toast.show(
       context,
-      '"$label" masuk ke Keahlian.',
+      '"$skill" masuk ke Keahlian.',
       tone: Tone.success,
       actionLabel: 'Batal',
       onAction: () {
-        r.data.skills.remove(label);
+        if (!had) r.data.skills.remove(skill);
         store.touch(r);
-        if (mounted) setState(() => _result = KeywordMatcher.match(_job.text, r.data.plainText));
+        if (mounted) {
+          setState(() {
+            result.matched.remove(skill);
+            result.missing.add(skill);
+          });
+        }
       },
     );
   }
@@ -95,7 +107,7 @@ class _MatchTabState extends State<MatchTab> {
                     Text('Cocokkan dengan lowongan', style: context.text.headlineLarge),
                     const SizedBox(height: 8),
                     Text(
-                      'Tempel deskripsi lowongan. Kami cari kata kunci yang belum ada di CV-mu.',
+                      'Tempel deskripsi lowongan. Kami cari skill yang dicari lowongan tapi belum ada di CV-mu.',
                       style: context.text.bodyLarge!.copyWith(color: c.inkMuted),
                     ),
                   ],
@@ -185,6 +197,43 @@ class _Results extends StatelessWidget {
   final ValueChanged<String> onAdd;
   final String job;
 
+  /// Experience entries (e0, e1…) and projects (p0, p1…) that have bullets.
+  static Map<String, ({String title, List<String> bullets})> _bulletEntries(Resume r) {
+    String join(List<String> parts) => parts.where((p) => p.trim().isNotEmpty).join(' · ');
+    final data = r.data;
+    return {
+      for (var i = 0; i < data.experiences.length; i++)
+        if (data.experiences[i].bullets.any((b) => b.trim().isNotEmpty))
+          'e$i': (
+            title: join([data.experiences[i].role, data.experiences[i].company]),
+            bullets: data.experiences[i].bullets.where((b) => b.trim().isNotEmpty).toList(),
+          ),
+      for (var i = 0; i < data.projects.length; i++)
+        if (data.projects[i].bullets.any((b) => b.trim().isNotEmpty))
+          'p$i': (
+            title: data.projects[i].name.trim().isEmpty ? 'Proyek ${i + 1}' : data.projects[i].name,
+            bullets: data.projects[i].bullets.where((b) => b.trim().isNotEmpty).toList(),
+          ),
+    };
+  }
+
+  Future<void> _tailorBullets(BuildContext context, ResumeStore store) async {
+    final entries = _bulletEntries(resume);
+    final out = await runAi(context, 'Menyesuaikan poin…', (ai) => ai.tailorBullets(job, entries));
+    if (out == null || !context.mounted) return;
+    final keep = await reviewBulletChanges(context, before: entries, after: out);
+    if (keep.isEmpty || !context.mounted) return;
+    for (final id in keep) {
+      final i = int.parse(id.substring(1));
+      final target = id.startsWith('e') ? resume.data.experiences[i].bullets : resume.data.projects[i].bullets;
+      target
+        ..clear()
+        ..addAll(out[id]!);
+    }
+    store.touch(resume);
+    Toast.show(context, '${keep.length} bagian diperbarui.', tone: Tone.success);
+  }
+
   @override
   Widget build(BuildContext context) {
     final c = context.clay;
@@ -214,8 +263,13 @@ class _Results extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          '${result.matched.length} dari ${result.total} kata kunci lowongan ada di CV-mu.',
+                          '${result.matched.length} dari ${result.total} skill yang dicari ada di CV-mu.',
                           style: context.text.bodyMedium!.copyWith(color: c.onSlab),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          result.byAi ? 'Dicek oleh AI' : 'Pencocokan offline (kamus skill)',
+                          style: context.text.labelSmall!.copyWith(color: c.onSlab.withValues(alpha: 0.75)),
                         ),
                       ],
                     ),
@@ -266,6 +320,16 @@ class _Results extends StatelessWidget {
             }
           },
         ),
+        if (_bulletEntries(resume).isNotEmpty) ...[
+          const SizedBox(height: 12),
+          ClayButton(
+            label: 'Sesuaikan poin pengalaman & proyek (AI)',
+            icon: HugeIcons.strokeRoundedAiMagic,
+            tone: ClayButtonTone.soft,
+            expand: true,
+            onPressed: () => _tailorBullets(context, store),
+          ),
+        ],
         const SizedBox(height: 10),
         Center(
           child: Text(

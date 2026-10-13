@@ -267,7 +267,11 @@ Future<T?> showClayDialog<T>(
                       const SizedBox(height: 8),
                       Text(message, style: ctx.text.bodyMedium!.copyWith(color: ctx.clay.inkMuted)),
                     ],
-                    if (body != null) ...[const SizedBox(height: 16), body],
+                    // Long bodies (AI suggestions) scroll; title and actions stay put.
+                    if (body != null) ...[
+                      const SizedBox(height: 16),
+                      Flexible(child: SingleChildScrollView(child: body)),
+                    ],
                     const SizedBox(height: 22),
                     Wrap(alignment: WrapAlignment.end, spacing: 10, runSpacing: 10, children: actions(ctx)),
                   ],

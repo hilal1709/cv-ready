@@ -77,8 +77,8 @@ void main() {
         'and GraphQL every day. Experience with GraphQL and Storybook is a must. You will write unit tests with Jest, '
         'care about accessibility, and collaborate with designers in Figma. Bonus: experience with AWS.';
     final m = KeywordMatcher.match(job, sample().plainText);
-    expect(m.missing, contains('graphql'));
-    expect(m.matched, contains('react'));
+    expect(m.missing, contains('GraphQL'));
+    expect(m.matched, contains('React'));
     expect(m.percent, inInclusiveRange(1, 99));
   });
 
