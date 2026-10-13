@@ -99,10 +99,10 @@ class _AuthScreenState extends State<AuthScreen> {
             const SizedBox(height: 24),
             _ModeSwitch(register: _register, onChanged: (v) => setState(() => _register = v)),
             const SizedBox(height: 20),
-            if (!Env.hasDatabase) ...[
+            if (!Env.hasBackend) ...[
               const ClayBanner(
-                title: 'Database belum terhubung',
-                message: 'Versi app ini dibuat tanpa koneksi database, jadi akun belum bisa dibuat. Pasang ulang versi yang lengkap.',
+                title: 'Server belum terhubung',
+                message: 'Versi app ini dibuat tanpa alamat server, jadi akun belum bisa dibuat. Pasang ulang versi yang lengkap.',
                 tone: Tone.error,
               ),
               const SizedBox(height: 16),

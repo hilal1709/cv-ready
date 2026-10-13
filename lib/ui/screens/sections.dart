@@ -3,7 +3,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:provider/provider.dart';
 
-import '../../core/env.dart';
 import '../../core/motion.dart';
 import '../../core/theme/clay.dart';
 import '../../core/theme/palette.dart';
@@ -242,14 +241,6 @@ const _gap = SizedBox(height: 16);
 /// Runs an AI call behind the clay loader and reports failures as a toast.
 Future<T?> runAi<T>(BuildContext context, String label, Future<T> Function(AiService ai) task) async {
   final ai = context.read<AiService>();
-  if (!Env.hasAi) {
-    Toast.show(
-      context,
-      'Fitur AI belum aktif. Tambahkan GEMINI_API_KEY atau ANTHROPIC_API_KEY di .env.json.',
-      tone: Tone.warning,
-    );
-    return null;
-  }
   try {
     return await withBusy(context, label, () => task(ai));
   } catch (e) {

@@ -3,7 +3,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:provider/provider.dart';
 
-import '../../core/env.dart';
 import '../../core/motion.dart';
 import '../../core/theme/clay.dart';
 import '../../core/theme/palette.dart';
@@ -48,9 +47,7 @@ class _MatchTabState extends State<MatchTab> {
       return;
     }
     // AI reads skills (and synonyms) properly; the offline dictionary is the fallback.
-    final viaAi = Env.hasAi
-        ? await runAi(context, 'Membaca lowongan…', (ai) => ai.matchSkills(_job.text, r.data))
-        : null;
+    final viaAi = await runAi(context, 'Membaca lowongan…', (ai) => ai.matchSkills(_job.text, r.data));
     if (!mounted) return;
     setState(() {
       _resumeId = r.id;

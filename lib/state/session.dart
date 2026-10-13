@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../data/api_client.dart';
 import '../data/auth_repository.dart';
 import '../data/models.dart';
 
@@ -17,9 +18,11 @@ class Session extends ChangeNotifier {
 
   Future<void> restore() async {
     try {
+      await ApiClient.instance.loadToken();
       final prefs = await SharedPreferences.getInstance();
       final raw = prefs.getString(_key);
-      if (raw != null) _user = AppUser.fromJson(jsonDecode(raw));
+      // A saved profile without a token comes from before the backend existed: sign in again.
+      if (raw != null && ApiClient.instance.hasToken) _user = AppUser.fromJson(jsonDecode(raw));
     } catch (_) {
       _user = null;
     }
@@ -50,7 +53,7 @@ class Session extends ChangeNotifier {
   Future<void> rename(String fullName) async {
     final u = _user;
     if (u == null) return;
-    await _auth.updateName(u.id, fullName);
+    await _auth.updateName(fullName);
     _user = AppUser(id: u.id, email: u.email, fullName: fullName.trim());
     await _persist();
     notifyListeners();
@@ -58,6 +61,7 @@ class Session extends ChangeNotifier {
 
   Future<void> logout() async {
     _user = null;
+    await _auth.signOut();
     await _persist();
     notifyListeners();
   }

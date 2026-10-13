@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
-import '../data/db.dart';
+import '../data/api_client.dart';
 import '../data/models.dart';
 import '../data/resume_repository.dart';
 import '../services/ats_scorer.dart';
@@ -44,7 +44,7 @@ class ResumeStore extends ChangeNotifier {
     try {
       _items = await _repo.list(uid);
     } catch (e) {
-      _error = e is DbException ? e.message : 'Ada yang tidak beres. Tarik ke bawah untuk mencoba lagi.';
+      _error = e is ApiException ? e.message : 'Ada yang tidak beres. Tarik ke bawah untuk mencoba lagi.';
     } finally {
       _loading = false;
       notifyListeners();

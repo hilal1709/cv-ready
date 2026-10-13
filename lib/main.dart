@@ -5,7 +5,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import 'core/theme/app_theme.dart';
 import 'data/auth_repository.dart';
-import 'data/db.dart';
+import 'data/api_client.dart';
 import 'data/resume_repository.dart';
 import 'services/ai_service.dart';
 import 'state/resume_store.dart';
@@ -23,14 +23,16 @@ Future<void> main() async {
     ),
   );
 
-  final session = Session(AuthRepository(Db.instance));
+  final session = Session(AuthRepository(ApiClient.instance));
   await session.restore();
+  // An expired or revoked token drops the user back to the sign-in screen.
+  ApiClient.instance.onUnauthorized = () => session.logout();
 
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: session),
-        ChangeNotifierProvider(create: (_) => ResumeStore(ResumeRepository(Db.instance))),
+        ChangeNotifierProvider(create: (_) => ResumeStore(ResumeRepository(ApiClient.instance))),
         Provider(create: (_) => AiService()),
       ],
       child: const CvReadyApp(),

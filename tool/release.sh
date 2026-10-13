@@ -12,6 +12,10 @@ NOTES="${1:-Pembaruan CV Ready $VER.}"
 REPO="hilal1709/cv-ready"
 
 [ -f .env.json ] || { echo ".env.json tidak ada"; exit 1; }
+grep -q '"API_URL"' .env.json || { echo ".env.json harus berisi API_URL (alamat backend)"; exit 1; }
+if grep -Eq '"(DB_PASSWORD|DB_USER|DB_HOST|ANTHROPIC_API_KEY|GEMINI_API_KEY)"' .env.json; then
+  echo ".env.json masih berisi kredensial database/AI. Sisakan hanya API_URL sebelum merilis APK."; exit 1
+fi
 [ -f android/key.properties ] || { echo "android/key.properties tidak ada (keystore rilis)"; exit 1; }
 gh release view "v$VER" -R "$REPO" >/dev/null 2>&1 && { echo "v$VER sudah dirilis. Naikkan version di pubspec.yaml."; exit 1; }
 

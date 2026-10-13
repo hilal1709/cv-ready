@@ -4,7 +4,6 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../core/env.dart';
 import '../../core/theme/clay.dart';
 import '../../core/theme/palette.dart';
 import '../../state/resume_store.dart';
@@ -89,19 +88,12 @@ class AccountTab extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          Env.hasAi
-              ? ClayBanner(
-                  title: Env.anthropicKey.isNotEmpty ? 'Asisten AI aktif (Claude)' : 'Asisten AI aktif (Gemini)',
-                  message: Env.anthropicKey.isNotEmpty
-                      ? 'Tombol AI di ringkasan dan poin pengalaman siap dipakai. Teks hanya dikirim saat kamu menekannya.'
-                      : 'Teks hanya dikirim saat kamu menekan tombol AI. Di paket gratis Gemini, Google boleh memakai teks yang dikirim untuk meningkatkan produknya, jadi hindari data sensitif.',
-                  tone: Tone.success,
-                )
-              : const ClayBanner(
-                  title: 'Asisten AI belum aktif',
-                  message: 'Isi GEMINI_API_KEY (gratis) atau ANTHROPIC_API_KEY di .env.json lalu build ulang untuk menyalakan fitur tulis & perbaiki kalimat.',
-                  tone: Tone.warning,
-                ),
+          const ClayBanner(
+            title: 'Asisten AI siap dipakai',
+            message:
+                'Teks hanya dikirim ke layanan AI saat kamu menekan tombol AI. Hindari menulis data sensitif seperti nomor KTP atau kata sandi.',
+            tone: Tone.success,
+          ),
           const SectionTitle('Panduan CV ATS'),
           Container(
             decoration: Clay.box(context, color: c.surfaceRaised, radius: Clay.radiusL, depth: 0.7),

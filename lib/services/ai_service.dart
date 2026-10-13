@@ -1,9 +1,6 @@
-import 'dart:async';
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
-
-import '../core/env.dart';
+import '../data/api_client.dart';
 import '../data/models.dart';
 import 'keyword_matcher.dart';
 
@@ -14,129 +11,27 @@ class AiException implements Exception {
   String toString() => message;
 }
 
-/// CV writing help. Uses the Claude Messages API when ANTHROPIC_API_KEY is
-/// set, otherwise Google Gemini (which has a free tier) when GEMINI_API_KEY
-/// is set. Both over raw HTTP. Nothing is sent until the user taps an AI action.
+/// CV writing help. The prompts are built here; the backend adds the system
+/// prompt, holds the AI keys and picks the model. Nothing is sent until the
+/// user taps an AI action.
 class AiService {
-  /// Haiku: the cheapest Claude model, plenty for short CV rewrites.
-  static const _claudeModel = 'claude-haiku-5-5';
-  static const _geminiBackup = 'gemini-flash-lite-latest';
-  static final _claudeUri = Uri.parse('https://api.anthropic.com/v1/messages');
-
-  static const _system = '''
-You are an expert international recruiter and CV writer. You write for ATS (applicant tracking systems) and human recruiters at the same time.
-Rules:
-- Write in the same language as the user's input. If the input is Indonesian, answer in Indonesian; otherwise English.
-- No first-person pronouns. Start bullets with a strong past-tense action verb (present tense for a current role).
-- Prefer concrete outcomes and numbers. Never invent numbers, employers, tools or achievements: if a metric is unknown, write the sentence so it reads well without one, or use a bracketed placeholder like [X%] the user can fill in.
-- Plain text only. No markdown, no headings, no quotes around the answer, no commentary.''';
+  AiService({ApiClient? api}) : _api = api ?? ApiClient.instance;
+  final ApiClient _api;
 
   Future<String> _ask(String prompt, {int maxTokens = 2000, bool json = false}) async {
-    if (!Env.hasAi) {
-      throw AiException(
-        'Fitur AI belum aktif. Isi GEMINI_API_KEY atau ANTHROPIC_API_KEY di .env.json lalu build ulang.',
-      );
-    }
-    final http.Response res;
     try {
-      if (Env.anthropicKey.isNotEmpty) {
-        res = await _postClaude(prompt, maxTokens).timeout(const Duration(seconds: 90));
-      } else {
-        // Free-tier models are often overloaded (503) or hang; try a second model once.
-        final backup = Env.geminiModel == _geminiBackup ? 'gemini-flash-latest' : _geminiBackup;
-        http.Response? r;
-        try {
-          r = await _postGemini(prompt, maxTokens, Env.geminiModel, json: json).timeout(const Duration(seconds: 20));
-        } on TimeoutException {
-          r = null;
-        }
-        if (r == null || r.statusCode == 503 || r.statusCode == 429) {
-          r = await _postGemini(prompt, maxTokens, backup, json: json).timeout(const Duration(seconds: 40));
-        }
-        res = r;
-      }
-    } catch (_) {
-      throw AiException('Tidak bisa menghubungi layanan AI. Cek koneksi internet.');
+      final res = await _api.request(
+        'POST',
+        '/ai',
+        body: {'prompt': prompt, 'maxTokens': maxTokens, 'json': json},
+        timeout: const Duration(seconds: 100),
+      );
+      final text = '${res['text'] ?? ''}'.trim();
+      if (text.isEmpty) throw AiException('AI tidak memberi jawaban. Coba lagi.');
+      return text;
+    } on ApiException catch (e) {
+      throw AiException(e.message);
     }
-
-    final body = jsonDecode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
-    if (res.statusCode != 200) {
-      final msg = (body['error'] as Map?)?['message'] ?? 'HTTP ${res.statusCode}';
-      throw AiException(switch (res.statusCode) {
-        400 when '$msg'.toLowerCase().contains('api key') => 'API key AI tidak valid.',
-        401 || 403 => 'API key AI tidak valid.',
-        429 => 'Batas pemakaian AI tercapai. Coba lagi beberapa menit lagi.',
-        >= 500 => 'Layanan AI sedang gangguan. Coba lagi nanti.',
-        _ => 'AI gagal: $msg',
-      });
-    }
-    final text = Env.anthropicKey.isNotEmpty ? _readClaude(body) : _readGemini(body);
-    if (text.isEmpty) throw AiException('AI tidak memberi jawaban. Coba lagi.');
-    return text;
-  }
-
-  Future<http.Response> _postClaude(String prompt, int maxTokens) => http.post(
-    _claudeUri,
-    headers: {
-      'content-type': 'application/json',
-      'x-api-key': Env.anthropicKey,
-      'anthropic-version': '2023-06-01',
-    },
-    body: jsonEncode({
-      'model': _claudeModel,
-      'max_tokens': maxTokens,
-      'system': _system,
-      'messages': [
-        {'role': 'user', 'content': prompt},
-      ],
-    }),
-  );
-
-  String _readClaude(Map<String, dynamic> body) {
-    if (body['stop_reason'] == 'refusal') {
-      throw AiException('AI menolak permintaan ini. Ubah teksnya lalu coba lagi.');
-    }
-    return (body['content'] as List)
-        .whereType<Map>()
-        .where((b) => b['type'] == 'text')
-        .map((b) => b['text'] as String)
-        .join()
-        .trim();
-  }
-
-  Future<http.Response> _postGemini(String prompt, int maxTokens, String model, {bool json = false}) => http.post(
-    Uri.parse('https://generativelanguage.googleapis.com/v1beta/models/$model:generateContent'),
-    headers: {'content-type': 'application/json', 'x-goog-api-key': Env.geminiKey},
-    body: jsonEncode({
-      'systemInstruction': {
-        'parts': [
-          {'text': _system},
-        ],
-      },
-      'contents': [
-        {
-          'role': 'user',
-          'parts': [
-            {'text': prompt},
-          ],
-        },
-      ],
-      // Thinking tokens count against maxOutputTokens; keep them low so the answer isn't cut off.
-      'generationConfig': {
-        'maxOutputTokens': maxTokens + 1500,
-        'thinkingConfig': {'thinkingLevel': 'low'},
-        if (json) 'responseMimeType': 'application/json',
-      },
-    }),
-  );
-
-  String _readGemini(Map<String, dynamic> body) {
-    final candidates = body['candidates'] as List?;
-    if (candidates == null || candidates.isEmpty) {
-      throw AiException('AI menolak permintaan ini. Ubah teksnya lalu coba lagi.');
-    }
-    final parts = ((candidates.first as Map)['content'] as Map?)?['parts'] as List? ?? const [];
-    return parts.whereType<Map>().where((p) => p['thought'] != true).map((p) => '${p['text'] ?? ''}').join().trim();
   }
 
   static List<String> _lines(String text) => text

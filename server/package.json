@@ -1,0 +1,18 @@
+{
+  "name": "cv-ready-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "API for CV Ready: accounts, CV storage and the AI proxy. Holds the database password and AI keys so the APK carries none.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "migrate": "node src/migrate.js",
+    "test": "node --test"
+  },
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "express": "^4.21.2",
+    "pg": "^8.13.1"
+  }
+}

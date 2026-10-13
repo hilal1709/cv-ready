@@ -17,7 +17,7 @@ enum Tone { success, error, info, warning }
 /// Turns any thrown error into copy a user can act on. Our own exceptions
 /// already carry Indonesian messages; anything else gets a generic recovery.
 String friendlyError(Object e) {
-  final known = ['DbException', 'AuthException', 'AiException'];
+  final known = ['ApiException', 'AiException'];
   if (known.contains(e.runtimeType.toString())) return '$e';
   return 'Ada yang tidak beres. Cek koneksi internet, lalu coba lagi.';
 }
